@@ -26,7 +26,7 @@ class PinCodeScreen extends StatelessWidget {
       ),
       body: BlocBuilder<PinFieldCubit, int>(
           bloc: pinFieldCubit,
-          builder: (context, state) {
+          builder: (context, pinfieldIndex) {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
@@ -52,12 +52,22 @@ class PinCodeScreen extends StatelessWidget {
                       return Container(
                         width: 28.w,
                         height: 28.w,
+                        alignment: Alignment.center,
                         decoration: BoxDecoration(
                           border: Border.all(
                             color: Colors.black.withOpacity(0.12),
                           ),
                           shape: BoxShape.circle,
-                          color: Colors.white,
+                        ),
+                        child: Container(
+                          width: 16.w,
+                          height: 16.w,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: index + 1 <= pinfieldIndex
+                                ? Colors.green
+                                : Colors.white,
+                          ),
                         ),
                       );
                     },
@@ -81,7 +91,10 @@ class PinCodeScreen extends StatelessWidget {
                     itemCount: 9,
                     itemBuilder: (context, index) {
                       return InkWell(
-                        onTap: () {},
+                        key: Key("keyboard${index + 1}"),
+                        onTap: () {
+                          pinFieldCubit.pinIndexIncrement();
+                        },
                         child: Container(
                           width: 120.w,
                           height: 60.h,
@@ -112,7 +125,10 @@ class PinCodeScreen extends StatelessWidget {
                       ),
                     ),
                     InkWell(
-                      onTap: () {},
+                      key: const Key("keyboard0"),
+                      onTap: () {
+                        pinFieldCubit.pinIndexIncrement();
+                      },
                       child: Container(
                         width: 120.w,
                         height: 60.h,
@@ -128,7 +144,9 @@ class PinCodeScreen extends StatelessWidget {
                       ),
                     ),
                     InkWell(
-                      onTap: () {},
+                      onTap: () {
+                        pinFieldCubit.pinIndexDecrement();
+                      },
                       child: Container(
                         width: 120.w,
                         height: 60.h,
